@@ -11,7 +11,7 @@ $(document).ready(function(){
   var content = $('#content');
   var up = "↑";
   var down = "↓";
-  var noChange = "~";
+  var noChange = "→";
   var currentValues = [];
   // var feed_id = "9845";
   // var feed_id = "9854";
