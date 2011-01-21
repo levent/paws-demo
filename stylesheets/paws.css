@@ -49,8 +49,12 @@ div#major {
   width: 60%;
 }
 
+div#minor {
+  width: 40%;
+  float: left;
+}
+
 div#minor div.datastream {
-  font-size: 0.8em;
   color: #666;
 }
 

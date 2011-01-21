@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
   if(!("WebSocket" in window)) {
@@ -44,7 +43,9 @@ $(document).ready(function(){
       url: "http://api.pachube.com/v2/feeds/" + feed_id + ".json?api_key=" + api_key,
       success: function(data) {
         content.html("<h3>" + data.title + "</h3>");
-        content.append("<h4>" + data.description + "</h4>");
+        if (data.description != undefined) {
+          content.append("<h4>" + data.description + "</h4>");
+        }
         datastreams = data.datastreams;
         for (var i=0; i < datastreams.length; i++) {
           setupDatastream(datastreams[i], i);
