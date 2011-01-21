@@ -3,25 +3,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
-    <title>Paws Demo</title>
+    <title>PAWS Demo</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/paws.js"></script>
     <link type="text/css" rel="stylesheet" href="stylesheets/paws.css" />
   </head>
   <body>
-    <a href="#9796" class="weather_station">Bitritto</a>
-    <a href="#9845" class="weather_station">Palagiano</a>
-    <a href="#9854" class="weather_station">Gallipoli</a>
-    <div id="content">
-    
-    </div>
-    <div id="ds_0" class="datastream"></div>
-    <div id="ds_2" class="datastream"></div>
-    <div id="ds_1" class="datastream minor"></div>
-    <div id="ds_3" class="datastream minor"></div>
-    <div id="ds_4" class="datastream minor"></div>
-    <div id="ds_5" class="datastream minor"></div>
-    <p id="last_update"><span id="retrieved_at"></span></p>
+    <header>
+
+      <hgroup>
+        <h1>PAWS Demo</h1>
+        <h2>Choose a weather station to connect...</h2>
+      </hgroup>
+
+      <nav>
+        <ul>
+          <li><a href="#9796" class="weather_station">Bitritto</a></li>
+          <li><a href="#9845" class="weather_station">Palagiano</a></li>
+          <li><a href="#9854" class="weather_station">Gallipoli</a></li>
+        </ul>
+      </nav>
+
+    </header>
+
+    <section>
+      <header id="content">
+      
+      </header>
+      <div id="major">
+        <div id="ds_0" class="datastream"></div>
+        <div id="ds_2" class="datastream"></div>
+      </div>
+      <div id="minor">
+        <div id="ds_1" class="datastream minor"></div>
+        <div id="ds_3" class="datastream minor"></div>
+        <div id="ds_4" class="datastream minor"></div>
+        <div id="ds_5" class="datastream minor"></div>
+      </div>
+    </section>
+    <time id="last_update">Last update: <span id="retrieved_at"></span></time>
   </body>
 </html>
 

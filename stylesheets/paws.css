@@ -10,27 +10,51 @@ body{
   width: 40em;
   line-height: 1.75;
   word-spacing: 0.1em
+  font-size: 1.1em;
 }
 
 a, a#visited {
   color: black;
 }
 
-h3, p {
+body header {
+  margin: 0 0 1em 0;
+  border-bottom: 1px solid #ccc;
+  padding: 0 0 1em 0;
+}
+
+section header {
+  border: none;
+
+}
+
+h1, h2, h3, h4, h5, p {
   margin: 0;
+  padding: 0;
 }
 
-div.datastream {
+nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  display: inline;
+  padding-left: 0.5em;
+}
+
+div#major {
   font-size: 1.2em;
-  color: black;
+  float: left;
+  width: 60%;
 }
 
-div.datastream.minor {
+div#minor div.datastream {
   font-size: 0.8em;
   color: #666;
 }
 
-p#last_update {
+time#last_update {
   position: absolute;
   top: 4px;
   right: 10px;

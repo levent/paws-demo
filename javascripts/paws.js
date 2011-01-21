@@ -20,7 +20,7 @@ $(document).ready(function(){
 
   function setupDatastream(datastream) {
     currentValues[datastream.id] = datastream.current_value;
-    $("#ds_" + datastream.id).html("<h3>" + datastream.tags + ":</h3>")
+    $("#ds_" + datastream.id).html("<h5>" + datastream.tags + ":</h5>")
     $("#ds_" + datastream.id).append("<p>" + '<span class="value">' + datastream.current_value + '</span>' + " " + datastream.unit.symbol + "</p>")
     $("#retrieved_at").html(datastream.at);
   }
@@ -43,8 +43,8 @@ $(document).ready(function(){
     $.ajax({
       url: "http://api.pachube.com/v2/feeds/" + feed_id + ".json?api_key=" + api_key,
       success: function(data) {
-        content.html("<h1>" + data.title + "</h1>");
-        content.append("<h2>" + data.description + "</h2>");
+        content.html("<h3>" + data.title + "</h3>");
+        content.append("<h4>" + data.description + "</h4>");
         datastreams = data.datastreams;
         for (var i=0; i < datastreams.length; i++) {
           setupDatastream(datastreams[i], i);
