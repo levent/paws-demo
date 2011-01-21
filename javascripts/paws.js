@@ -26,14 +26,14 @@ $(document).ready(function(){
 
   function updateDatastreamViaWebSocket(data) {
     datastream = JSON.parse(data);
-    if (currentValues[datastream.id] > datastream.value) {
+    if (currentValues[datastream.ds_id] > datastream.value) {
       var change = down;
-    } else if (currentValues[datastream.id] < datastream.value) {
+    } else if (currentValues[datastream.ds_id] < datastream.value) {
       var change = up;
     } else {
       var change = noChange;
     }
-    currentValues[datastream.id] = datastream.value;
+    currentValues[datastream.ds_id] = datastream.value;
     $("#ds_" + datastream.ds_id + " .value").html(change + datastream.value);
     $("#retrieved_at").html(datastream.retrieved_at);
   }
