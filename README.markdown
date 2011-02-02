@@ -1,4 +1,4 @@
-## Demo of the Pachube WebSocket Server (PAWS)
+## Demo of the Pachube Advanced Web-scale Socket-server (PAWS)
 
 This little demo will...
 
