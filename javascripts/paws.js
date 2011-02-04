@@ -13,9 +13,10 @@ $(document).ready(function(){
   var down = "↓";
   var noChange = "→";
   var currentValues = [];
-  // var feed_id = "9845";
-  // var feed_id = "9854";
-  // var feed_id = "9796";
+  
+  function formatTimestamp(ts) {
+    return(ts.replace(/(\..{6}Z)$/, "").replace("T", " "));
+  }
 
   function setupDatastream(datastream) {
     currentValues[datastream.id] = datastream.current_value;
@@ -29,7 +30,6 @@ $(document).ready(function(){
       var symbol = "";
     }
     $("#ds_" + datastream.id).append("<p>" + '<span class="value">' + datastream.current_value + '</span>' + " " + symbol + "</p>");
-    $("#retrieved_at").html(datastream.at);
   }
 
   function updateDatastreamViaWebSocket(data) {
@@ -46,9 +46,8 @@ $(document).ready(function(){
       var oldValue = currentValues[datastream.id];
       currentValues[datastream.id] = datastream.current_value;
       $("#ds_" + datastream.id + " .value").html(change + ' <span class="old_value">' + oldValue + '</span> ' + datastream.current_value);
-      $("#retrieved_at").html(datastream.at);
-
     }
+    $("#retrieved_at").html(formatTimestamp(data.body.updated)).effect("highlight", {}, 3000);
   }
 
   function initialLoad(feed_id, api_key) {
@@ -63,6 +62,8 @@ $(document).ready(function(){
         for (var i=0; i < datastreams.length; i++) {
           setupDatastream(datastreams[i], i);
         };
+        $("#last_update").show();
+        $("#retrieved_at").html(formatTimestamp(data.updated));
       },
      dataType: 'jsonp'
     });
@@ -95,13 +96,17 @@ $(document).ready(function(){
     $('#load_feed_form').submit(function(form) {
       old_url = document.location.hash.substring(1);
       feed_id = $("input#feed_id").val();
-      document.location = "#" + feed_id;
+      document.location.hash = feed_id;
       unsubscribe(ws, old_url, api_key);
       $(".datastream").remove();
       subscribe(ws, feed_id, api_key);
       initialLoad(feed_id, api_key);
       return false;
     });
+    if (feed_id) {
+      subscribe(ws, feed_id, api_key);
+      initialLoad(feed_id, api_key);
+    }
   }
 
   ws.onmessage = function(evt) {
@@ -111,6 +116,6 @@ $(document).ready(function(){
       updateDatastreamViaWebSocket(response);
     }
   }
-    
+  
 });
 

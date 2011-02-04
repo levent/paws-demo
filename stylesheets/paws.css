@@ -74,9 +74,11 @@ section#main div.datastream {
   margin: 10px;
   width: 27%;
   float: left;
+  border-bottom: 4px solid #666;
 }
 time#last_update {
   position: absolute;
   top: 4px;
   right: 10px;
+  display: none;
 }
