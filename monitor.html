@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
-    <title>PAWS Demo</title>
+    <title>Feed Monitor</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/paws.js"></script>
     <link type="text/css" rel="stylesheet" href="stylesheets/paws.css" />
@@ -21,43 +21,29 @@
   </head>
   <body>
     <header>
+
       <nav id="main">
         <ul>
-          <li><a href="monitor.html">Pachube feed monitor</a></li>
+          <li><a href="index.html">Weather station demo</a></li>
         </ul>
       </nav>
+
 
       <hgroup>
         <h1>PAWS Demo</h1>
-        <h2>Choose a weather station to connect...</h2>
+        <h2>Enter a Pachube feed to monitor...</h2>
       </hgroup>
-
-      <nav>
-          <ul>
-          <li><a href="#9796" class="weather_station">Bitritto</a></li>
-          <li><a href="#9845" class="weather_station">Palagiano</a></li>
-          <li><a href="#9854" class="weather_station">Gallipoli</a></li>
-        </ul>
-      </nav>
-
+      <form id="load_feed_form">
+        <label for="feed_id">Pachube feed (ie. 504)</label>
+        <input id="feed_id" type="text" />
+        <input type="submit" />
+      </form>
     </header>
 
-    <section>
-      <header id="content">
-      
-      </header>
-      <div id="major">
-        <div id="ds_0" class="datastream"></div>
-        <div id="ds_2" class="datastream"></div>
-      </div>
-      <div id="minor">
-        <div id="ds_1" class="datastream minor"></div>
-        <div id="ds_3" class="datastream minor"></div>
-        <div id="ds_4" class="datastream minor"></div>
-        <div id="ds_5" class="datastream minor"></div>
-      </div>
+    <section id="main">
+      <div id="content"></div>
+      <time id="last_update">Last update: <span id="retrieved_at"></span></time>
     </section>
-    <time id="last_update">Last update: <span id="retrieved_at"></span></time>
   </body>
 </html>
 

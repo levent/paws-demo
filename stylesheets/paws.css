@@ -32,6 +32,11 @@ h1, h2, h3, h4, h5, p {
   margin: 0;
   padding: 0;
 }
+nav#main {
+  position:absolute;
+  top: 0;
+  left: 0;
+}
 
 nav ul {
   margin: 0;
@@ -58,6 +63,18 @@ div#minor div.datastream {
   color: #666;
 }
 
+span.old_value {
+  color: #666;
+  font-size: 0.7em;
+}
+
+section#main div.datastream {
+  background-color: #eee;
+  padding: 10px;
+  margin: 10px;
+  width: 27%;
+  float: left;
+}
 time#last_update {
   position: absolute;
   top: 4px;

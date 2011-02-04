@@ -19,8 +19,16 @@ $(document).ready(function(){
 
   function setupDatastream(datastream) {
     currentValues[datastream.id] = datastream.current_value;
-    $("#ds_" + datastream.id).html("<h5>" + datastream.tags + ":</h5>")
-    $("#ds_" + datastream.id).append("<p>" + '<span class="value">' + datastream.current_value + '</span>' + " " + datastream.unit.symbol + "</p>")
+    if ($("#ds_" + datastream.id).length == 0) {
+      $('<div id="ds_' + datastream.id + '" class="datastream"></div>').appendTo('section#main');
+    }
+    $("#ds_" + datastream.id).html("<h5>" + datastream.tags + ":</h5>");
+    if (datastream.unit) {
+      var symbol = datastream.unit.symbol;
+    } else {
+      var symbol = "";
+    }
+    $("#ds_" + datastream.id).append("<p>" + '<span class="value">' + datastream.current_value + '</span>' + " " + symbol + "</p>");
     $("#retrieved_at").html(datastream.at);
   }
 
@@ -35,8 +43,9 @@ $(document).ready(function(){
       } else {
         var change = noChange;
       }
+      var oldValue = currentValues[datastream.id];
       currentValues[datastream.id] = datastream.current_value;
-      $("#ds_" + datastream.id + " .value").html(change + datastream.current_value);
+      $("#ds_" + datastream.id + " .value").html(change + ' <span class="old_value">' + oldValue + '</span> ' + datastream.current_value);
       $("#retrieved_at").html(datastream.at);
 
     }
@@ -46,7 +55,7 @@ $(document).ready(function(){
     $.ajax({
       url: "http://api.pachube.com/v2/feeds/" + feed_id + ".json?api_key=" + api_key,
       success: function(data) {
-        content.html("<h3>" + data.title + "</h3>");
+        content.html('<h3 class="title">' + data.title + "</h3>");
         if (data.description != undefined) {
           content.append("<h4>" + data.description + "</h4>");
         }
@@ -54,19 +63,25 @@ $(document).ready(function(){
         for (var i=0; i < datastreams.length; i++) {
           setupDatastream(datastreams[i], i);
         };
-
+      },
+      error: function(x, e) {
+               alert("P");
+        console.log(x);
+        console.log(e);
       },
       dataType: 'jsonp'
     });
+    if ($("header#content h3.title").length == 0) {
+      content.html($('<p class="error">We couldn\'t load Pachube feed: "' + feed_id + '"</div>'));
+    }
   }
  
   function subscribe(ws, feed_id, api_key) {
-    console.log('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"subscribe", "resource":"/feeds/' + feed_id + '"}');
     ws.send('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"subscribe", "resource":"/feeds/' + feed_id + '"}');
   }
  
   function unsubscribe(ws, feed_id, api_key) {
-    ws.send('{"command":"unsubscribe", "resource": "/feeds/' + feed_id + '/#", "api_key": "' + api_key + '"}');
+    ws.send('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"unsubscribe", "resource":"/feeds/' + feed_id + '"}');
   }
   // Use the Pachube beta websocket server
   ws = new WebSocket("ws://beta.pachube.com:8080/");
@@ -81,6 +96,16 @@ $(document).ready(function(){
       feed_id = link.currentTarget.hash.substring(1);
       subscribe(ws, feed_id, api_key);
       initialLoad(feed_id, api_key);
+    });
+    $('#load_feed_form').submit(function(form) {
+      old_url = document.location.hash.substring(1);
+      feed_id = $("input#feed_id").val();
+      document.location = "#" + feed_id;
+      unsubscribe(ws, old_url, api_key);
+      $(".datastream").remove();
+      subscribe(ws, feed_id, api_key);
+      initialLoad(feed_id, api_key);
+      return false;
     });
   }
 
