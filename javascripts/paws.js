@@ -25,17 +25,21 @@ $(document).ready(function(){
   }
 
   function updateDatastreamViaWebSocket(data) {
-    datastream = JSON.parse(data);
-    if (currentValues[datastream.ds_id] > datastream.value) {
-      var change = down;
-    } else if (currentValues[datastream.ds_id] < datastream.value) {
-      var change = up;
-    } else {
-      var change = noChange;
+    datastreams = data.body.datastreams;
+    for (var i=0; i < datastreams.length; i++) {
+      datastream = datastreams[i];
+      if (currentValues[datastream.id] > datastream.current_value) {
+        var change = down;
+      } else if (currentValues[datastream.id] < datastream.current_value) {
+        var change = up;
+      } else {
+        var change = noChange;
+      }
+      currentValues[datastream.id] = datastream.current_value;
+      $("#ds_" + datastream.id + " .value").html(change + datastream.current_value);
+      $("#retrieved_at").html(datastream.at);
+
     }
-    currentValues[datastream.ds_id] = datastream.value;
-    $("#ds_" + datastream.ds_id + " .value").html(change + datastream.value);
-    $("#retrieved_at").html(datastream.retrieved_at);
   }
 
   function initialLoad(feed_id, api_key) {
@@ -57,12 +61,11 @@ $(document).ready(function(){
   }
  
   function subscribe(ws, feed_id, api_key) {
-    // console.log('{"command":"subscribe", "resource": "/feeds/' + feed_id + '/#", "api_key": "' + api_key + '"}');
-    ws.send('{"command":"subscribe", "resource": "/feeds/' + feed_id + '/#", "api_key": "' + api_key + '"}');
+    console.log('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"subscribe", "resource":"/feeds/' + feed_id + '"}');
+    ws.send('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"subscribe", "resource":"/feeds/' + feed_id + '"}');
   }
  
   function unsubscribe(ws, feed_id, api_key) {
-    // console.log('{"command":"unsubscribe", "resource": "/feeds/' + feed_id + '/#", "api_key": "' + api_key + '"}');
     ws.send('{"command":"unsubscribe", "resource": "/feeds/' + feed_id + '/#", "api_key": "' + api_key + '"}');
   }
   // Use the Pachube beta websocket server
@@ -83,7 +86,10 @@ $(document).ready(function(){
 
   ws.onmessage = function(evt) {
     data = evt.data;
-    updateDatastreamViaWebSocket(data);
+    response = JSON.parse(data);
+    if (response.body) {
+      updateDatastreamViaWebSocket(response);
+    }
   }
     
 });
