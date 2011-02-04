@@ -64,12 +64,7 @@ $(document).ready(function(){
           setupDatastream(datastreams[i], i);
         };
       },
-      error: function(x, e) {
-               alert("P");
-        console.log(x);
-        console.log(e);
-      },
-      dataType: 'jsonp'
+     dataType: 'jsonp'
     });
     if ($("header#content h3.title").length == 0) {
       content.html($('<p class="error">We couldn\'t load Pachube feed: "' + feed_id + '"</div>'));
