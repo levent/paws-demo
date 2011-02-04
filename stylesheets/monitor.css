@@ -1,0 +1,35 @@
+body {
+  width: 90%;
+  margin-top: 40px;
+}
+
+section#feed_description {
+  width: 100%;
+  clear: both;
+}
+
+section#main {
+  width: 70%;
+  float: left;
+}
+
+section#description {
+  background-color: #f2f0ce;
+  width: 25%;
+  padding: 10px;
+  float: left;
+}
+
+section#description p {
+  margin: 0 0 10px 0;
+}
+
+section#description a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+span.header_description {
+  font-size: 0.6em;
+}
+

@@ -54,9 +54,9 @@ $(document).ready(function(){
     $.ajax({
       url: "http://api.pachube.com/v2/feeds/" + feed_id + ".json?api_key=" + api_key,
       success: function(data) {
-        content.html('<h3 class="title">' + data.title + ' <a href="http://www.pachube.com/feeds/' + feed_id + '">☞</a></h3>');
+        $("#feed_description").html('<h3 class="title">' + data.title + ' <a href="http://www.pachube.com/feeds/' + feed_id + '">☞</a></h3>');
         if (data.description != undefined) {
-          content.append("<h4>" + data.description + "</h4>");
+          $("#feed_description").append("<h4>" + data.description + "</h4>");
         }
         datastreams = data.datastreams;
         for (var i=0; i < datastreams.length; i++) {
@@ -68,7 +68,7 @@ $(document).ready(function(){
      dataType: 'jsonp'
     });
     if ($("header#content h3.title").length == 0) {
-      content.html($('<p class="error">We couldn\'t load Pachube feed: "' + feed_id + '"</div>'));
+      $("#feed_description").html($('<p class="error">We couldn\'t load Pachube feed: "' + feed_id + '"</div>'));
     }
   }
  
@@ -107,6 +107,9 @@ $(document).ready(function(){
     if (feed_id) {
       subscribe(ws, feed_id, api_key);
       initialLoad(feed_id, api_key);
+    }
+    if ($('input#feed_id')) {
+      $('input#feed_id').focus();
     }
   }
 

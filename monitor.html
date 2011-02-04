@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
-    <title>Feed Monitor</title>
+    <title>Pachube Advanced Web-scale Socket-server Demo</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
     <script type="text/javascript" src="javascripts/paws.js?201102041626"></script>
     <link type="text/css" rel="stylesheet" href="stylesheets/paws.css?201102041626" />
+    <link type="text/css" rel="stylesheet" href="stylesheets/monitor.css?201102041626" />
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-4091770-7']);
@@ -23,7 +24,7 @@
   <body>
     <header>
         
-      <nav id="main">
+      <nav id="primary">
         <ul>
           <li><a href="index.html">Weather station demo</a></li>
         </ul>
@@ -31,19 +32,28 @@
 
 
       <hgroup>
-        <h1>PAWS Demo</h1>
-        <h2>Enter a Pachube feed to monitor...</h2>
+        <h1>PAWS <span class="header_description">(Pachube Advanced Web-scale Socket-server)</span></h1>
       </hgroup>
       <form id="load_feed_form">
-        <label for="feed_id">Pachube feed (ie. 504)</label>
+        <label for="feed_id">Enter a Pachube feed id to monitor (ie. 504):</label>
         <input id="feed_id" type="text" />
         <input type="submit" />
       </form>
     </header>
 
+    <section id="feed_description"></section>
+
+    <section id="description">
+      <p>This demo shows how you can use the Pachube Advanced Web-scale Socket-server to receive realtime feed updates.</p>
+      <p>Our <a href="http://api.pachube.com/#advanced-api-keys">new api keys</a> mean you can limit them to only allow access to public data. In other words they're safe to publish in your html source code.</p>
+      <p>Once connected to the server, we then manipulate the DOM everytime a message is received.</p>
+      <p>This is all built with HTML and Javascript.</p>
+      <p>As WebSockets are a fairly recent concept, you'll need to use a browser that is capable (Google Chrome or Safari 5).</p>
+    </section>
+
+
     <section id="main">
-      <div id="content"></div>
-      <time id="last_update">Last updated: <span id="retrieved_at"></span></time>
+      <div id="last_update">Last updated: <time id="retrieved_at"></time></div>
     </section>
   </body>
 </html>

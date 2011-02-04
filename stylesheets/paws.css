@@ -25,7 +25,6 @@ body header {
 
 section header {
   border: none;
-
 }
 
 h1, h2, h3, h4, h5, p {
@@ -42,7 +41,7 @@ h3 a {
   vertical-align: bottom;
 }
 
-nav#main {
+nav#primary {
   position:absolute;
   top: 0;
   left: 0;
@@ -81,12 +80,13 @@ span.old_value {
 section#main div.datastream {
   background-color: #eee;
   padding: 10px;
-  margin: 10px;
+  margin: 0 0px 10px 10px;
   width: 27%;
   float: left;
   border-bottom: 4px solid #666;
 }
-time#last_update {
+
+div#last_update {
   position: absolute;
   top: 4px;
   right: 10px;
