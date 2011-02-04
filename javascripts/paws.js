@@ -54,7 +54,7 @@ $(document).ready(function(){
     $.ajax({
       url: "http://api.pachube.com/v2/feeds/" + feed_id + ".json?api_key=" + api_key,
       success: function(data) {
-        content.html('<h3 class="title">' + data.title + "</h3>");
+        content.html('<h3 class="title">' + data.title + ' <a href="http://www.pachube.com/feeds/' + feed_id + '">☞</a></h3>');
         if (data.description != undefined) {
           content.append("<h4>" + data.description + "</h4>");
         }
@@ -79,6 +79,7 @@ $(document).ready(function(){
   function unsubscribe(ws, feed_id, api_key) {
     ws.send('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"unsubscribe", "resource":"/feeds/' + feed_id + '"}');
   }
+
   // Use the Pachube beta websocket server
   ws = new WebSocket("ws://beta.pachube.com:8080/");
 
