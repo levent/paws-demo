@@ -44,13 +44,12 @@
     <section id="feed_description"></section>
 
     <section id="description">
-      <p>This demo shows how you can use the Pachube Advanced Web-scale Socket-server to receive realtime feed updates.</p>
-      <p>Our <a href="http://api.pachube.com/#advanced-api-keys">new api keys</a> mean you can limit them to only allow access to public data. In other words they're safe to publish in your html source code.</p>
-      <p>Once connected to the server, we then manipulate the DOM everytime a message is received.</p>
-      <p>This is all built with HTML and Javascript.</p>
-      <p>As WebSockets are a fairly recent concept, you'll need to use a browser that is capable (Google Chrome or Safari 5).</p>
+      <p>This demo uses the Pachube Advanced Web-scale Socket-server (yea that's right) to receive realtime feed updates.</p>
+      <p>Our <a href="http://api.pachube.com/#advanced-api-keys">new api keys</a> mean you can limit them to having read-only access, making them safe to publish in your html source code.</p>
+      <p>Once connected, the server sends us messages and we use the WebSocket API's onmessage event handler to reflect the changes on the page.</p>
+      <p>This is all built using HTML5 and Javascript.</p>
+      <p>As WebSockets are a fairly recent concept, you'll need to use a browser that has support (Google Chrome or Safari 5).</p>
     </section>
-
 
     <section id="main">
       <div id="last_update">Last updated: <time id="retrieved_at"></time></div>
