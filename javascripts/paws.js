@@ -5,7 +5,7 @@ $(document).ready(function(){
     return;
   }
  
-  // This is my user level GET advanced api key
+  // This is a read-only api key
   var api_key = "Sgu3QtSJAYrmLCRyjh9VUO1enKCnLyTnbDaEb5rrzW0";
   var feed_id = document.location.hash.substring(1);
   var content = $('#content');
@@ -18,6 +18,7 @@ $(document).ready(function(){
     return(ts.replace(/(\..{6}Z)$/, "").replace("T", " "));
   }
 
+  // Called the first time a datastream is setup
   function setupDatastream(datastream) {
     currentValues[datastream.id] = datastream.current_value;
     if ($("#ds_" + datastream.id).length == 0) {
@@ -32,7 +33,9 @@ $(document).ready(function(){
     $("#ds_" + datastream.id).append("<p>" + '<span class="value">' + datastream.current_value + '</span>' + " " + symbol + "</p>");
   }
 
-  function updateDatastreamViaWebSocket(data) {
+  // This method every time PAWS receives new information about a feed
+  //   Updates the datastreams
+  function updateDatastreamsViaWebSocket(data) {
     datastreams = data.body.datastreams;
     for (var i=0; i < datastreams.length; i++) {
       datastream = datastreams[i];
@@ -50,6 +53,7 @@ $(document).ready(function(){
     $("#retrieved_at").html(formatTimestamp(data.body.updated)).effect("highlight", {}, 3000);
   }
 
+  // Use the standard Pachube API to load the initial feed information
   function initialLoad(feed_id, api_key) {
     $.ajax({
       url: "http://api.pachube.com/v2/feeds/" + feed_id + ".json?api_key=" + api_key,
@@ -72,6 +76,8 @@ $(document).ready(function(){
     }
   }
  
+  // Request to subscribe for any updates to a particular feed
+  // The socket server accepts various methods (get, put, post, subscribe, unsubscribe)
   function subscribe(ws, feed_id, api_key) {
     ws.send('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"subscribe", "resource":"/feeds/' + feed_id + '"}');
   }
@@ -80,12 +86,13 @@ $(document).ready(function(){
     ws.send('{"headers":{"X-PachubeApiKey":"' + api_key + '"}, "method":"unsubscribe", "resource":"/feeds/' + feed_id + '"}');
   }
 
-  // Use the Pachube beta websocket server
+  // Connect to PAWS
   ws = new WebSocket("ws://beta.pachube.com:8080/");
 
   ws.onerror = function(evt) {
     alert("Could not open WebSocket connection");
   }
+  
   ws.onopen = function(evt) {
     $('.weather_station').click(function (link) {
       old_url = document.location.hash.substring(1);
@@ -113,11 +120,12 @@ $(document).ready(function(){
     }
   }
 
+  // This event handler will receive the message from PAWS and update the page
   ws.onmessage = function(evt) {
     data = evt.data;
     response = JSON.parse(data);
     if (response.body) {
-      updateDatastreamViaWebSocket(response);
+      updateDatastreamsViaWebSocket(response);
     }
   }
   
