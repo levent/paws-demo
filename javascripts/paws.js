@@ -13,6 +13,7 @@ $(document).ready(function(){
   var down = "↓";
   var noChange = "→";
   var currentValues = [];
+  var currentGraphs = [];
   
   function formatTimestamp(ts) {
     return(ts.replace(/(\..{6}Z)$/, "").replace("T", " "));
@@ -48,7 +49,9 @@ $(document).ready(function(){
       }
       var oldValue = currentValues[datastream.id];
       currentValues[datastream.id] = datastream.current_value;
+      currentGraphs[datastream.id] = (Math.abs(Math.round((datastream.current_value / (datastream.max_value - datastream.min_value)) * 100)));
       $("#ds_" + datastream.id + " .value").html(change + ' <span class="old_value">' + oldValue + '</span> ' + datastream.current_value);
+      $("#ds_" + datastream.id).append('<div style="float:left;background-color:black;width:10px;height:' + currentGraphs[datastream.id] + 'px">&nbsp;</div>');
     }
     $("#retrieved_at").html(formatTimestamp(data.body.updated)).effect("highlight", {}, 3000);
   }
