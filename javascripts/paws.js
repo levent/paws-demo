@@ -14,6 +14,7 @@ $(document).ready(function(){
   var noChange = "→";
   var currentValues = [];
   var currentGraphs = [];
+  var counter = 0;
   
   function formatTimestamp(ts) {
     return(ts.replace(/(\..{6}Z)$/, "").replace("T", " "));
@@ -32,11 +33,17 @@ $(document).ready(function(){
       var symbol = "";
     }
     $("#ds_" + datastream.id).append("<p>" + '<span class="value">' + datastream.current_value + '</span>' + " " + symbol + "</p>");
+    $('<canvas id="ds_' + datastream.id + '_graph" width="200" height="100"></canvas>').appendTo('#ds_' + datastream.id);
   }
 
   // This method every time PAWS receives new information about a feed
   //   Updates the datastreams
   function updateDatastreamsViaWebSocket(data) {
+    if (counter >= 10) {
+      counter = 0;
+    } else {
+      counter += 1;
+    }
     datastreams = data.body.datastreams;
     for (var i=0; i < datastreams.length; i++) {
       datastream = datastreams[i];
@@ -50,8 +57,18 @@ $(document).ready(function(){
       var oldValue = currentValues[datastream.id];
       currentValues[datastream.id] = datastream.current_value;
       currentGraphs[datastream.id] = (Math.abs(Math.round((datastream.current_value / (datastream.max_value - datastream.min_value)) * 100)));
+      var context = $("#ds_" + datastream.id + "_graph")[0].getContext('2d');
+      context.strokeStyle = "#000000";
+      context.fillStyle = "#FFFF00";
+      context.beginPath();
+      context.moveTo(counter * 10, 100 - currentGraphs[datastream.id]);
+      context.lineWidth=2;
+      context.lineTo((counter + 1) * 10, 100 - currentGraphs[datastream.id]);
+      context.closePath();
+      context.stroke();
+      context.fill();
       $("#ds_" + datastream.id + " .value").html(change + ' <span class="old_value">' + oldValue + '</span> ' + datastream.current_value);
-      $("#ds_" + datastream.id).append('<div style="float:left;background-color:black;width:10px;height:' + currentGraphs[datastream.id] + 'px">&nbsp;</div>');
+      $("#ds_" + datastream.id + " .graph").append('<div style="float:left;background-color:black;width:10px;height:' + currentGraphs[datastream.id] + 'px">&nbsp;</div>');
     }
     $("#retrieved_at").html(formatTimestamp(data.body.updated)).effect("highlight", {}, 3000);
   }
