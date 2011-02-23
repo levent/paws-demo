@@ -53,23 +53,25 @@ $(document).ready(function(){
       currentValues[datastream.id] = datastream.current_value;
       currentGraphs[datastream.id] = (Math.abs(Math.round((datastream.current_value / (datastream.max_value - datastream.min_value)) * 100)));
       var canvas = $("#ds_" + datastream.id + "_graph")[0];
-      var context = canvas.getContext('2d');
-      if (counter >= 10) {
-        context.clearRect(0,0,canvas.width,canvas.height);
+      if(canvas) {
+        var context = canvas.getContext('2d');
+        if (counter >= 10) {
+          context.clearRect(0,0,canvas.width,canvas.height);
+        }
+        context.strokeStyle = "#000000";
+        context.fillStyle = "#FFFF00";
+        context.beginPath();
+        context.moveTo(counter * 10, 100 - currentGraphs[datastream.id]);
+        context.lineWidth=2;
+        context.lineTo((counter + 1) * 10, 100 - currentGraphs[datastream.id]);
+        context.closePath();
+        context.stroke();
+        context.fill();
       }
-      context.strokeStyle = "#000000";
-      context.fillStyle = "#FFFF00";
-      context.beginPath();
-      context.moveTo(counter * 10, 100 - currentGraphs[datastream.id]);
-      context.lineWidth=2;
-      context.lineTo((counter + 1) * 10, 100 - currentGraphs[datastream.id]);
-      context.closePath();
-      context.stroke();
-      context.fill();
       $("#ds_" + datastream.id + " .value").html(change + ' <span class="old_value">' + oldValue + '</span> ' + datastream.current_value);
       $("#ds_" + datastream.id + " .graph").append('<div style="float:left;background-color:black;width:10px;height:' + currentGraphs[datastream.id] + 'px">&nbsp;</div>');
     }
-    if (counter >= 10) {
+    if (counter > 10) {
       counter = 0;
     } else {
       counter += 1;
