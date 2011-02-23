@@ -39,11 +39,6 @@ $(document).ready(function(){
   // This method every time PAWS receives new information about a feed
   //   Updates the datastreams
   function updateDatastreamsViaWebSocket(data) {
-    if (counter >= 10) {
-      counter = 0;
-    } else {
-      counter += 1;
-    }
     datastreams = data.body.datastreams;
     for (var i=0; i < datastreams.length; i++) {
       datastream = datastreams[i];
@@ -57,7 +52,11 @@ $(document).ready(function(){
       var oldValue = currentValues[datastream.id];
       currentValues[datastream.id] = datastream.current_value;
       currentGraphs[datastream.id] = (Math.abs(Math.round((datastream.current_value / (datastream.max_value - datastream.min_value)) * 100)));
-      var context = $("#ds_" + datastream.id + "_graph")[0].getContext('2d');
+      var canvas = $("#ds_" + datastream.id + "_graph")[0];
+      var context = canvas.getContext('2d');
+      if (counter >= 10) {
+        context.clearRect(0,0,canvas.width,canvas.height);
+      }
       context.strokeStyle = "#000000";
       context.fillStyle = "#FFFF00";
       context.beginPath();
@@ -69,6 +68,11 @@ $(document).ready(function(){
       context.fill();
       $("#ds_" + datastream.id + " .value").html(change + ' <span class="old_value">' + oldValue + '</span> ' + datastream.current_value);
       $("#ds_" + datastream.id + " .graph").append('<div style="float:left;background-color:black;width:10px;height:' + currentGraphs[datastream.id] + 'px">&nbsp;</div>');
+    }
+    if (counter >= 10) {
+      counter = 0;
+    } else {
+      counter += 1;
     }
     $("#retrieved_at").html(formatTimestamp(data.body.updated)).effect("highlight", {}, 3000);
   }
